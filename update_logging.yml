@@ -1,0 +1,44 @@
+---
+- name: Check for online hosts
+  hosts: all
+  gather_facts: false
+  connection: network_cli
+  vars:
+    ansible_network_os: ios
+
+  tasks:
+    - name: Ping for reachability
+      command: ping -c3 {{ inventory_hostname }}
+      delegate_to: localhost
+      register: ping_result
+      ignore_errors: true
+      check_mode: False
+
+    - name: Group hosts by online
+      group_by: key=reachable
+      when: ping_result.rc == 0
+      check_mode: False
+
+- name: Check and set cisco compliance configuration items
+  hosts: reachable
+  gather_facts: False
+  connection: network_cli
+  vars:
+    ansible_network_os: ios
+    new_syslog: 192.168.0.1
+    old_syslog: 192.168.0.1
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Enable New logging server
+      cisco.ios.ios_logging:
+        dest: host
+        name: { { new_syslog } }
+        state: present
+
+    - name: Remove Old logging server
+      cisco.ios.ios_logging:
+        dest: host
+        name: { { old_syslog } }
+        state: absent
