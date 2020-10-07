@@ -41,4 +41,4 @@
         dest: host
         name: "{{ old_syslog }}"
         state: absent
-      when: "{{ old_syslog }} is defined"
+      when: old_syslog is defined
