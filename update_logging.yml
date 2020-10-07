@@ -26,7 +26,6 @@
   vars:
     ansible_network_os: ios
     new_syslog: 192.168.0.1
-    old_syslog: 192.168.0.1
   collections:
     - cisco.ios
 
@@ -42,4 +41,4 @@
         dest: host
         name: "{{ old_syslog }}"
         state: absent
-      when: remove_old is defined and remove_old|bool == true
+      when: old_syslog is defined
