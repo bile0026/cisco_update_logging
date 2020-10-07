@@ -43,4 +43,4 @@
         dest: host
         name: "{{ old_syslog }}"
         state: absent
-      when: not remove_old
+      when: remove_old is true
