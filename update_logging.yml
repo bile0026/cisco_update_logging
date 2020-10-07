@@ -35,12 +35,12 @@
     - name: Enable New logging server
       cisco.ios.ios_logging:
         dest: host
-        name: { { new_syslog } }
+        name: {{ new_syslog }}
         state: present
 
     - name: Remove Old logging server
       cisco.ios.ios_logging:
         dest: host
-        name: { { old_syslog } }
+        name: {{ old_syslog }}
         state: absent
       when: not remove_old
