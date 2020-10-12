@@ -35,6 +35,7 @@
         dest: host
         name: "{{ new_syslog }}"
         state: present
+      notify: save ios
 
     - name: Remove Old logging server
       cisco.ios.ios_logging:
@@ -42,3 +43,9 @@
         name: "{{ old_syslog }}"
         state: absent
       when: old_syslog is defined
+      notify: save ios
+
+  handlers:
+    - name: save ios
+      cisco.ios.ios_command:
+        command: copy running-config startup-config
