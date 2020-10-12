@@ -48,5 +48,5 @@
   handlers:
     - name: save ios
       cisco.ios.ios_command:
-        commands: copy running-config startup-config
+        commands: write memory
       when: not ansible_check_mode
